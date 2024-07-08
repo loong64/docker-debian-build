@@ -23,8 +23,8 @@ jobs:
       - name: Checkout code for debuerreotype
         uses: actions/checkout@v4
         with:
-          repository: loong64/debuerreotype
-          ref: patch_loong64
+          repository: debuerreotype/debuerreotype
+          ref: master
           path: debuerreotype
 
       - name: Checkout code for docker-debian-artifacts
