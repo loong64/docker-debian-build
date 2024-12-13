@@ -1,4 +1,4 @@
-name: GitHub CI
+name: Debian Artifacts
 
 on:
   schedule:
