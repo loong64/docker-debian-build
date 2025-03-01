@@ -40,13 +40,19 @@ jobs:
           serial=$(date "+%Y%m%d")
           sed -i 's@\[ -z "$SHA256" \]@# \[ -z "$SHA256" \]@g' .validate-debian.sh
           ARCH=loong64 SUITE=unstable CODENAME="sid" TIMESTAMP="today 00:00:00" ./.validate-debian.sh
+          sed -i 's@riscv64@loong64 | riscv64@g' examples/oci-image.sh
           mv validate/* validate/debian
           mv validate/debian/loong64 validate/debian/archive
+          echo "${serial}" > validate/debian/archive/serial
+          cp -f validate/debian/archive/unstable/rootfs.dpkg-arch validate/debian/archive/dpkg-arch
+          cp -f validate/debian/archive/unstable/rootfs.debuerreotype-version validate/debian/archive/debuerreotype-version
+          cp -f validate/debian/archive/unstable/rootfs.debuerreotype-epoch validate/debian/archive/debuerreotype-epoch
+          shopt -s globstar
+          for rootfs in validate/debian/archive/**/rootfs.tar.xz; do
+            dir="$(dirname "$rootfs")"
+            ./examples/oci-image.sh "$dir/oci.tar" "$dir"
+          done
           cd validate/debian
-          echo "${serial}" > archive/serial
-          cp -f archive/unstable/rootfs.dpkg-arch archive/dpkg-arch
-          cp -f archive/unstable/rootfs.debuerreotype-version archive/debuerreotype-version
-          cp -f archive/unstable/rootfs.debuerreotype-epoch archive/debuerreotype-epoch
           zip -r artifacts.zip archive
           echo "serial=${serial}" >> $GITHUB_ENV
 
