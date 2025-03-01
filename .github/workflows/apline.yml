@@ -27,6 +27,15 @@ jobs:
       - name: Get Version
         id: get_version
         run: |
+          if [ ! -f "loongarch64/Dockerfile" ]; then
+            mkdir -p loongarch64
+            cp riscv64/Dockerfile loongarch64/
+            sed -i 's@riscv64@loongarch64@g' loongarch64/Dockerfile
+            cd loongarch64
+            wget https://dl-cdn.alpinelinux.org/alpine/${{ matrix.version }}/releases/loongarch64/alpine-minirootfs-$(cat ../VERSION)-loongarch64.tar.gz
+            cd ..
+          fi
+
           case ${{ matrix.version }} in
             edge)
               full_version=$(grep -oP '(?<=alpine-minirootfs-)[0-9]+' loongarch64/Dockerfile)
