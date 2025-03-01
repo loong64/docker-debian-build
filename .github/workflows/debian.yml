@@ -47,6 +47,7 @@ jobs:
           cp -f validate/debian/archive/unstable/rootfs.dpkg-arch validate/debian/archive/dpkg-arch
           cp -f validate/debian/archive/unstable/rootfs.debuerreotype-version validate/debian/archive/debuerreotype-version
           cp -f validate/debian/archive/unstable/rootfs.debuerreotype-epoch validate/debian/archive/debuerreotype-epoch
+          # OCI: https://github.com/docker-library/oi-janky-groovy/blob/master/tianon/debuerreotype/arch-pipeline.groovy
           shopt -s globstar
           for rootfs in validate/debian/archive/**/rootfs.tar.xz; do
             dir="$(dirname "$rootfs")"
